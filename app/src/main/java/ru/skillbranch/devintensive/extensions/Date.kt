@@ -3,6 +3,7 @@ package ru.skillbranch.devintensive.extensions
 import java.lang.IllegalStateException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 const val SECOND = 1000L
 const val MINUTE = 60 * SECOND
@@ -34,99 +35,33 @@ fun Date.humanizeDiff(date: Date = Date()): String {
     val diffHours = diff / HOUR
     val diffDays = diff / DAY
 
-    var result: String = ""
-    when{
-        (diffSeconds >= 0 && diffSeconds <= 1) -> result = "только что"
-        (diffSeconds > 1 && diffSeconds <= 45) -> result = "несколько секунд назад"
-        (diffSeconds > 45 && diffSeconds <= 75) -> result = "минуту назад"
-        (diffSeconds > 75 && diffMinutes <= 45) -> when(diffMinutes.toInt()){
-            11 -> result = "$diffMinutes минут назад"
-            12 -> result = "$diffMinutes минут назад"
-            13 -> result = "$diffMinutes минут назад"
-            14 -> result = "$diffMinutes минут назад"
-            else -> when((diffMinutes).toInt() % 10){
-                1 -> result = "$diffMinutes минуту назад"
-                2 -> result = "$diffMinutes минуты назад"
-                3 -> result = "$diffMinutes минуты назад"
-                4 -> result = "$diffMinutes минуты назад"
-                else -> result = "$diffMinutes минут назад"
-            }
-        }
-        (diffMinutes > 45 && diffMinutes <= 75) -> result = "час назад"
-        (diffMinutes > 75 && diffHours <= 22) -> when(diffHours.toInt()){
-            11 -> result = "$diffHours часов назад"
-            12 -> result = "$diffHours часов назад"
-            13 -> result = "$diffHours часов назад"
-            14 -> result = "$diffHours часов назад"
-            else -> when((diffHours).toInt() % 10){
-                1 -> result = "$diffHours час назад"
-                2 -> result = "$diffHours часа назад"
-                3 -> result = "$diffHours часа назад"
-                4 -> result = "$diffHours часа назад"
-                else -> result = "$diffHours часов назад"
-            }
-        }
-        (diffHours > 22 && diffHours <= 26) -> result = "день назад"
-        (diffHours > 26 && diffDays <= 360) -> when(diffDays.toInt()){
-            11 -> result = "$diffDays дней назад"
-            12 -> result = "$diffDays дней назад"
-            13 -> result = "$diffDays дней назад"
-            14 -> result = "$diffDays дней назад"
-            else -> when((diffDays).toInt() % 10){
-                1 -> result = "$diffDays день назад"
-                2 -> result = "$diffDays дня назад"
-                3 -> result = "$diffDays дня назад"
-                4 -> result = "$diffDays дня назад"
-                else -> result = "$diffDays дней назад"
-            }
-        }
-        (diffDays > 360) -> result = "более года назад"
+    val absDiffSeconds = abs(diffSeconds)
+    val absDiffMinutes = abs(diffMinutes)
+    val absDiffHours = abs(diffHours)
+    val absDiffDays = abs(diffDays)
 
-        (diffSeconds <= 0 && diffSeconds >= -1) -> result = "только что"
-        (diffSeconds < -1 && diffSeconds >= -45) -> result = "через несколько секунд"
-        (diffSeconds < -45 && diffSeconds >= -75) -> result = "через минуту"
-        (diffSeconds < -75 && diffMinutes >= -45) -> when(diffMinutes.toInt()){
-            -11 -> result = "через ${-diffMinutes} минут"
-            -12 -> result = "через ${-diffMinutes} минут"
-            -13 -> result = "через ${-diffMinutes} минут"
-            -14 -> result = "через ${-diffMinutes} минут"
-            else -> when(diffMinutes.toInt() % 10){
-                -1 -> result = "через ${-diffMinutes} минуту"
-                -2 -> result = "через ${-diffMinutes} минуты"
-                -3 -> result = "через ${-diffMinutes} минуты"
-                -4 -> result = "через ${-diffMinutes} минуты"
-                else -> result = "через ${-diffMinutes} минут"
-            }
+    var result: String
+
+    result = when{
+        (absDiffSeconds > 1 && absDiffSeconds <= 45) -> "несколько секунд"
+        (absDiffSeconds > 45 && absDiffSeconds <= 75) -> "минуту"
+        (absDiffSeconds > 75 && absDiffMinutes <= 45) -> dateText(absDiffMinutes.toInt(), TimeUnits.MINUTE)
+        (absDiffMinutes > 45 && absDiffMinutes <= 75) -> "час"
+        (absDiffMinutes > 75 && absDiffHours <= 22) -> dateText(absDiffHours.toInt(), TimeUnits.HOUR)
+        (absDiffHours > 22 && absDiffHours <= 26) -> "день"
+        (absDiffHours > 26 && absDiffDays <= 360) -> dateText(absDiffDays.toInt(), TimeUnits.DAY)
+        else -> ""
+    }
+
+    result = when{
+        (absDiffSeconds >= 0 && absDiffSeconds <= 1) -> "только что"
+        (diffDays > 360) -> "более года назад"
+        (diffDays < -360) -> "более чем через год"
+        else -> when{
+            (diffSeconds >= 0) -> result + " назад"
+            (diffSeconds < 0) -> "через " + result
+            else -> ""
         }
-        (diffMinutes < -45 && diffMinutes >= -75) -> result = "час назад"
-        (diffMinutes < -75 && diffHours >= -22) -> when(diffHours.toInt()){
-            -11 -> result = "через ${-diffHours} часов"
-            -12 -> result = "через ${-diffHours} часов"
-            -13 -> result = "через ${-diffHours} часов"
-            -14 -> result = "через ${-diffHours} часов"
-            else -> when(diffHours.toInt() % 10){
-                -1 -> result = "через ${-diffHours} час"
-                -2 -> result = "через ${-diffHours} часа"
-                -3 -> result = "через ${-diffHours} часа"
-                -4 -> result = "через ${-diffHours} часа"
-                else -> result = "через ${-diffHours} часов"
-            }
-        }
-        (diffHours < -22 && diffHours >= -26) -> result = "день назад"
-        (diffHours < -26 && diffDays >= -360) -> when(diffDays.toInt()){
-            -11 -> result = "через ${-diffDays} дней"
-            -12 -> result = "через ${-diffDays} дней"
-            -13 -> result = "через ${-diffDays} дней"
-            -14 -> result = "через ${-diffDays} дней"
-            else -> when(diffDays.toInt() % 10){
-                -1 -> result = "через ${-diffDays} день"
-                -2 -> result = "через ${-diffDays} дня"
-                -3 -> result = "через ${-diffDays} дня"
-                -4 -> result = "через ${-diffDays} дня"
-                else -> result = "через ${-diffDays} дней"
-            }
-        }
-        (diffDays < -360) -> result = "более чем через год"
     }
 
     return result
@@ -137,4 +72,45 @@ enum class TimeUnits{
     MINUTE,
     HOUR,
     DAY
+}
+
+fun TimeUnits.plural(value: Int): String {
+    return dateText(value, this)
+}
+
+private fun dateText(value: Int, units: TimeUnits): String {
+    return when(units){
+        TimeUnits.SECOND -> when(value){
+            11, 12, 13, 14 -> "$value секунд"
+            else -> when(value % 10){
+                1 -> "$value секунду"
+                2, 3, 4 -> "$value секунды"
+                else -> "$value секунд"
+            }
+        }
+        TimeUnits.MINUTE -> when(value){
+            11, 12, 13, 14 -> "$value минут"
+            else -> when(value % 10){
+                1 -> "$value минуту"
+                2, 3, 4 -> "$value минуты"
+                else -> "$value минут"
+            }
+        }
+        TimeUnits.HOUR -> when(value){
+            11, 12, 13, 14 -> "$value часов"
+            else -> when(value % 10){
+                1 -> "$value час"
+                2, 3, 4 -> "$value часа"
+                else -> "$value часов"
+            }
+        }
+        TimeUnits.DAY -> when(value){
+            11, 12, 13, 14 -> "$value дней"
+            else -> when(value % 10){
+                1 -> "$value день"
+                2, 3, 4 -> "$value дня"
+                else -> "$value дней"
+            }
+        }
+    }
 }
