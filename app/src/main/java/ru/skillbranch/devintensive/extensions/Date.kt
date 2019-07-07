@@ -75,7 +75,41 @@ enum class TimeUnits{
 }
 
 fun TimeUnits.plural(value: Int): String {
-    return dateText(value, this)
+    //return dateText(value, this)
+    return when(this){
+        TimeUnits.SECOND -> when(value){
+            11, 12, 13, 14 -> "$value секунд"
+            else -> when(value % 10){
+                1 -> "$value секунда"
+                2, 3, 4 -> "$value секунды"
+                else -> "$value секунд"
+            }
+        }
+        TimeUnits.MINUTE -> when(value){
+            11, 12, 13, 14 -> "$value минут"
+            else -> when(value % 10){
+                1 -> "$value минута"
+                2, 3, 4 -> "$value минуты"
+                else -> "$value минут"
+            }
+        }
+        TimeUnits.HOUR -> when(value){
+            11, 12, 13, 14 -> "$value часов"
+            else -> when(value % 10){
+                1 -> "$value час"
+                2, 3, 4 -> "$value часа"
+                else -> "$value часов"
+            }
+        }
+        TimeUnits.DAY -> when(value){
+            11, 12, 13, 14 -> "$value дней"
+            else -> when(value % 10){
+                1 -> "$value день"
+                2, 3, 4 -> "$value дня"
+                else -> "$value дней"
+            }
+        }
+    }
 }
 
 private fun dateText(value: Int, units: TimeUnits): String {
