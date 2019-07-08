@@ -40,31 +40,27 @@ fun Date.humanizeDiff(date: Date = Date()): String {
     val absDiffHours = abs(diffHours)
     val absDiffDays = abs(diffDays)
 
-    var result: String
-
-    result = when{
+    val result: String = when{
         (absDiffSeconds > 1 && absDiffSeconds <= 45) -> "несколько секунд"
         (absDiffSeconds > 45 && absDiffSeconds <= 75) -> "минуту"
-        (absDiffSeconds > 75 && absDiffMinutes <= 45) -> dateText(absDiffMinutes.toInt(), TimeUnits.MINUTE)
+        (absDiffSeconds > 75 && absDiffMinutes <= 45) -> TimeUnits.MINUTE.plurals(absDiffMinutes.toInt())
         (absDiffMinutes > 45 && absDiffMinutes <= 75) -> "час"
-        (absDiffMinutes > 75 && absDiffHours <= 22) -> dateText(absDiffHours.toInt(), TimeUnits.HOUR)
+        (absDiffMinutes > 75 && absDiffHours <= 22) -> TimeUnits.HOUR.plurals(absDiffHours.toInt())
         (absDiffHours > 22 && absDiffHours <= 26) -> "день"
-        (absDiffHours > 26 && absDiffDays <= 360) -> dateText(absDiffDays.toInt(), TimeUnits.DAY)
+        (absDiffHours > 26 && absDiffDays <= 360) -> TimeUnits.DAY.plurals(absDiffDays.toInt())
         else -> ""
     }
 
-    result = when{
+    return when{
         (absDiffSeconds >= 0 && absDiffSeconds <= 1) -> "только что"
         (diffDays > 360) -> "более года назад"
         (diffDays < -360) -> "более чем через год"
         else -> when{
-            (diffSeconds >= 0) -> result + " назад"
-            (diffSeconds < 0) -> "через " + result
+            (diffSeconds >= 0) -> "$result назад"
+            (diffSeconds < 0) -> "через $result"
             else -> ""
         }
     }
-
-    return result
 }
 
 enum class TimeUnits{
@@ -74,46 +70,7 @@ enum class TimeUnits{
     DAY
 }
 
-fun TimeUnits.plural(value: Int): String {
-    //return dateText(value, this)
-    return when(this){
-        TimeUnits.SECOND -> when(value){
-            11, 12, 13, 14 -> "$value секунд"
-            else -> when(value % 10){
-                1 -> "$value секунда"
-                2, 3, 4 -> "$value секунды"
-                else -> "$value секунд"
-            }
-        }
-        TimeUnits.MINUTE -> when(value){
-            11, 12, 13, 14 -> "$value минут"
-            else -> when(value % 10){
-                1 -> "$value минута"
-                2, 3, 4 -> "$value минуты"
-                else -> "$value минут"
-            }
-        }
-        TimeUnits.HOUR -> when(value){
-            11, 12, 13, 14 -> "$value часов"
-            else -> when(value % 10){
-                1 -> "$value час"
-                2, 3, 4 -> "$value часа"
-                else -> "$value часов"
-            }
-        }
-        TimeUnits.DAY -> when(value){
-            11, 12, 13, 14 -> "$value дней"
-            else -> when(value % 10){
-                1 -> "$value день"
-                2, 3, 4 -> "$value дня"
-                else -> "$value дней"
-            }
-        }
-    }
-}
-
-private fun dateText(value: Int, units: TimeUnits): String {
-    return when(units){
+fun TimeUnits.plurals(value: Int): String = when(this){
         TimeUnits.SECOND -> when(value){
             11, 12, 13, 14 -> "$value секунд"
             else -> when(value % 10){
@@ -147,4 +104,3 @@ private fun dateText(value: Int, units: TimeUnits): String {
             }
         }
     }
-}
