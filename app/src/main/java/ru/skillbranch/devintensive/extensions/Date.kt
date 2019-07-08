@@ -43,11 +43,11 @@ fun Date.humanizeDiff(date: Date = Date()): String {
     val result: String = when{
         (absDiffSeconds > 1 && absDiffSeconds <= 45) -> "несколько секунд"
         (absDiffSeconds > 45 && absDiffSeconds <= 75) -> "минуту"
-        (absDiffSeconds > 75 && absDiffMinutes <= 45) -> TimeUnits.MINUTE.plurals(absDiffMinutes.toInt())
+        (absDiffSeconds > 75 && absDiffMinutes <= 45) -> TimeUnits.MINUTE.plural(absDiffMinutes.toInt())
         (absDiffMinutes > 45 && absDiffMinutes <= 75) -> "час"
-        (absDiffMinutes > 75 && absDiffHours <= 22) -> TimeUnits.HOUR.plurals(absDiffHours.toInt())
+        (absDiffMinutes > 75 && absDiffHours <= 22) -> TimeUnits.HOUR.plural(absDiffHours.toInt())
         (absDiffHours > 22 && absDiffHours <= 26) -> "день"
-        (absDiffHours > 26 && absDiffDays <= 360) -> TimeUnits.DAY.plurals(absDiffDays.toInt())
+        (absDiffHours > 26 && absDiffDays <= 360) -> TimeUnits.DAY.plural(absDiffDays.toInt())
         else -> ""
     }
 
@@ -67,11 +67,10 @@ enum class TimeUnits{
     SECOND,
     MINUTE,
     HOUR,
-    DAY
-}
+    DAY;
 
-fun TimeUnits.plurals(value: Int): String = when(this){
-        TimeUnits.SECOND -> when(value){
+    fun plural(value: Int): String = when(this){
+        SECOND -> when(value){
             11, 12, 13, 14 -> "$value секунд"
             else -> when(value % 10){
                 1 -> "$value секунду"
@@ -79,7 +78,7 @@ fun TimeUnits.plurals(value: Int): String = when(this){
                 else -> "$value секунд"
             }
         }
-        TimeUnits.MINUTE -> when(value){
+        MINUTE -> when(value){
             11, 12, 13, 14 -> "$value минут"
             else -> when(value % 10){
                 1 -> "$value минуту"
@@ -87,7 +86,7 @@ fun TimeUnits.plurals(value: Int): String = when(this){
                 else -> "$value минут"
             }
         }
-        TimeUnits.HOUR -> when(value){
+        HOUR -> when(value){
             11, 12, 13, 14 -> "$value часов"
             else -> when(value % 10){
                 1 -> "$value час"
@@ -95,7 +94,7 @@ fun TimeUnits.plurals(value: Int): String = when(this){
                 else -> "$value часов"
             }
         }
-        TimeUnits.DAY -> when(value){
+        DAY -> when(value){
             11, 12, 13, 14 -> "$value дней"
             else -> when(value % 10){
                 1 -> "$value день"
@@ -104,3 +103,4 @@ fun TimeUnits.plurals(value: Int): String = when(this){
             }
         }
     }
+}
