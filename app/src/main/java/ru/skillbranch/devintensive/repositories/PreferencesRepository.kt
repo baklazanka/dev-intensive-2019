@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package ru.skillbranch.devintensive.repositories
 
 import android.content.SharedPreferences
