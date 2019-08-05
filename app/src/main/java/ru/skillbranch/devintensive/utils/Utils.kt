@@ -24,7 +24,7 @@ object Utils {
             return initial?.toUpperCase()
         }
         else{
-            return (firstName?.substring(0, 1) + lastName?.substring(0, 1)).toUpperCase()
+            return (firstName.substring(0, 1) + lastName.substring(0, 1)).toUpperCase()
         }
     }
 
