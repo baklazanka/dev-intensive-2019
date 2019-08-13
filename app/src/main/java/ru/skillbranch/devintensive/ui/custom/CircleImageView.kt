@@ -50,9 +50,7 @@ class CircleImageView @JvmOverloads constructor(
     private var cvBitmap: Bitmap? = null
     private var cvDrawable: Drawable? = null
 
-    @Dimension fun getBorderWidth(): Int {
-        return borderWidth
-    }
+    @Dimension fun getBorderWidth(): Int = borderWidth
 
     fun setBorderWidth(@Dimension(unit = Dimension.DP) dp: Int) {
         borderWidth = dp
@@ -67,8 +65,8 @@ class CircleImageView @JvmOverloads constructor(
     }
 
     fun setBorderColor(@ColorRes colorId: Int) {
-        //borderColor = resources.getColor(colorId, context.theme)
-        borderColor = colorId
+        borderColor = resources.getColor(colorId, context.theme)
+        //borderColor = colorId
         update()
     }
 
