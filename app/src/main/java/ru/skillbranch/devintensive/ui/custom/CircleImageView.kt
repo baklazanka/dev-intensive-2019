@@ -13,9 +13,11 @@ import ru.skillbranch.devintensive.R
 import java.lang.Exception
 import android.graphics.Bitmap
 import android.graphics.Shader
-import android.os.Build
 import android.view.View
 import android.view.ViewOutlineProvider
+import android.graphics.Outline
+import android.graphics.BitmapShader
+import android.graphics.ColorFilter
 
 class CircleImageView @JvmOverloads constructor(
     context: Context,
@@ -25,83 +27,63 @@ class CircleImageView @JvmOverloads constructor(
 
     companion object{
         private const val DEFAULT_BORDERCOLOR = Color.WHITE
-        private const val DEFAULT_BORDERWIDTH = 2
+        private const val DEFAULT_BORDERWIDTH = 2f
     }
 
-    private var cv_borderColor = DEFAULT_BORDERCOLOR
-    private var cv_borderWidth = DEFAULT_BORDERWIDTH
+    private var borderColor = DEFAULT_BORDERCOLOR
+    private var borderWidth = DEFAULT_BORDERWIDTH
     //private var cv_borderWidth = DEFAULT_BORDERWIDTH * resources.displayMetrics.density
 
     //fun dpToPx(dp: Int): Int = (dp * resources.displayMetrics.density).toInt()
     //fun pxToDp(px: Int): Int = (px / resources.displayMetrics.density).toInt()
 
     private var circleColor: Int = Color.BLACK
-    private var cv_colorFilter: ColorFilter? = null
+    private var cvColorFilter: ColorFilter? = null
 
     private val paint: Paint = Paint().apply { isAntiAlias = true }
     private val borderPaint: Paint = Paint().apply { isAntiAlias = true }
     private val backgroundPaint: Paint = Paint().apply { isAntiAlias = true }
 
-    private var circleCenter: Float = 0f
+    private var circleCenter = 0
     private var heightCircle: Int = 0
 
-    private var cv_bitmap: Bitmap? = null
-    private var cv_drawable: Drawable? = null
+    private var cvBitmap: Bitmap? = null
+    private var cvDrawable: Drawable? = null
 
-//    fun getCircleColor(): Int = circleColor
-//
-//    fun setCircleColor(@ColorRes colorId: Int){
-//        circleCenter = colorId
-//        backgroundPaint.color = circleColor
-//        invalidate()
-//    }
+    @Dimension fun getBorderWidth(): Int = borderWidth.toInt()
 
-    @Dimension fun getBorderWidth(): Int = cv_borderWidth
-
-    //fun setBorderWidth(@Dimension(unit = Dimension.DP) dp: Int) {
-    fun setBorderWidth(@Dimension dp: Int) {
-        cv_borderWidth = dp
+    fun setBorderWidth(@Dimension(unit = Dimension.DP) dp: Int) {
+        borderWidth = dp.toFloat()
         update()
     }
 
-    fun getBorderColor(): Int = cv_borderColor
+    fun getBorderColor(): Int = borderColor
 
     fun setBorderColor(hex: String) {
-        cv_borderColor = Color.parseColor(hex)
+        borderColor = Color.parseColor(hex)
         update()
     }
 
     fun setBorderColor(@ColorRes colorId: Int) {
-        cv_borderColor = resources.getColor(colorId, context.theme)
-        //cv_borderColor = colorId
+        //borderColor = resources.getColor(colorId, context.theme)
+        borderColor = colorId
         update()
     }
 
-//    fun getCVColorFilter(): ColorFilter? = cv_colorFilter
-//
-//    fun setCVColorFilter(cf: ColorFilter) {
-//        if (cv_colorFilter != cf) {
-//            cv_colorFilter = cf
-//            if (cv_colorFilter != null) {
-//                cv_drawable = null
-//                invalidate()
-//            }
-//        }
-//    }
-
     init {
         if (attrs != null){
-            val a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView)
-            cv_borderColor = a.getColor(R.styleable.CircleImageView_cv_borderColor, DEFAULT_BORDERCOLOR)
-            cv_borderWidth = a.getDimensionPixelSize(R.styleable.CircleImageView_cv_borderWidth, DEFAULT_BORDERWIDTH)
-            //cv_borderWidth = a.getDimension(R.styleable.CircleImageView_cv_borderWidth, DEFAULT_BORDERWIDTH)
+            val a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyleAttr, 0)
+
+            val defaultBorderSize = DEFAULT_BORDERWIDTH * getContext().resources.displayMetrics.density
+            borderWidth = a.getDimension(R.styleable.CircleImageView_cv_borderWidth, defaultBorderSize)
+            borderColor = a.getColor(R.styleable.CircleImageView_cv_borderColor, DEFAULT_BORDERCOLOR)
             a.recycle()
         }
     }
 
     override fun setColorFilter(cf: ColorFilter?) {
         super.setColorFilter(cf)
-        cv_colorFilter = cf
+        cvColorFilter = cf
     }
 
     override fun getScaleType(): ScaleType {
@@ -125,23 +107,21 @@ class CircleImageView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        //super.onDraw(canvas)
         loadBitmap()
 
-        if (cv_bitmap == null){
+        if (cvBitmap == null){
             return
         }
 
-        val circleCenterWithborder = circleCenter * resources.displayMetrics.density +
-                                            cv_borderWidth * resources.displayMetrics.density
+        val circleCenterWithBorder = circleCenter + borderWidth
 
-        canvas.drawCircle(circleCenterWithborder, circleCenterWithborder, circleCenterWithborder, borderPaint)
-        canvas.drawCircle(circleCenterWithborder, circleCenterWithborder, circleCenter, backgroundPaint)
-        canvas.drawCircle(circleCenterWithborder, circleCenterWithborder, circleCenter, paint)
+        canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenterWithBorder, borderPaint)
+        canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), backgroundPaint)
+        canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paint)
     }
 
     private fun update(){
-        if (cv_bitmap != null){
+        if (cvBitmap != null){
             updateShader()
         }
 
@@ -150,12 +130,12 @@ class CircleImageView @JvmOverloads constructor(
 
         heightCircle = Math.min(usableWidth, usableHeight)
 
-        circleCenter = (heightCircle - cv_borderWidth * resources.displayMetrics.density * 2) / 2
-        borderPaint.color = if (cv_borderWidth == 0){
+        circleCenter = (heightCircle - borderWidth * 2).toInt() / 2
+        borderPaint.color = if (borderWidth == 0f){
             circleColor
         }
         else{
-            cv_borderColor
+            borderColor
         }
 
         manageElevation()
@@ -171,12 +151,12 @@ class CircleImageView @JvmOverloads constructor(
     }
 
     private fun loadBitmap() {
-        if (cv_drawable == drawable){
+        if (cvDrawable == drawable){
             return
         }
 
-        cv_drawable = drawable
-        cv_bitmap = drawableToBitmap(cv_drawable)
+        cvDrawable = drawable
+        cvBitmap = drawableToBitmap(cvDrawable)
         updateShader()
     }
 
@@ -186,7 +166,7 @@ class CircleImageView @JvmOverloads constructor(
     }
 
     private fun updateShader() {
-        cv_bitmap?.also {
+        cvBitmap?.also {
             val shader = BitmapShader(it, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP)
 
             val scale: Float
@@ -228,7 +208,7 @@ class CircleImageView @JvmOverloads constructor(
 
             paint.shader = shader
 
-            paint.colorFilter = cv_colorFilter
+            paint.colorFilter = cvColorFilter
         }
     }
 
