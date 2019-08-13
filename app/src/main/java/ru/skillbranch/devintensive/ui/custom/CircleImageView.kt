@@ -27,7 +27,7 @@ class CircleImageView @JvmOverloads constructor(
 
     companion object{
         private const val DEFAULT_BORDERCOLOR = Color.WHITE
-        private const val DEFAULT_BORDERWIDTH = 2f
+        private const val DEFAULT_BORDERWIDTH = 2
     }
 
     private var borderColor = DEFAULT_BORDERCOLOR
@@ -50,10 +50,12 @@ class CircleImageView @JvmOverloads constructor(
     private var cvBitmap: Bitmap? = null
     private var cvDrawable: Drawable? = null
 
-    @Dimension fun getBorderWidth(): Int = borderWidth.toInt()
+    @Dimension fun getBorderWidth(): Int {
+        return borderWidth
+    }
 
     fun setBorderWidth(@Dimension(unit = Dimension.DP) dp: Int) {
-        borderWidth = dp.toFloat()
+        borderWidth = dp
         update()
     }
 
@@ -74,8 +76,10 @@ class CircleImageView @JvmOverloads constructor(
         if (attrs != null){
             val a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyleAttr, 0)
 
-            val defaultBorderSize = DEFAULT_BORDERWIDTH * getContext().resources.displayMetrics.density
-            borderWidth = a.getDimension(R.styleable.CircleImageView_cv_borderWidth, defaultBorderSize)
+            //val defaultBorderSize = DEFAULT_BORDERWIDTH * resources.displayMetrics.density
+            //borderWidth = a.getDimension(R.styleable.CircleImageView_cv_borderWidth, defaultBorderSize)
+            val borderWidthPixelSize = a.getDimensionPixelSize(R.styleable.CircleImageView_cv_borderWidth, DEFAULT_BORDERWIDTH)
+            borderWidth = (borderWidthPixelSize / resources.displayMetrics.density).toInt()
             borderColor = a.getColor(R.styleable.CircleImageView_cv_borderColor, DEFAULT_BORDERCOLOR)
             a.recycle()
         }
@@ -113,7 +117,7 @@ class CircleImageView @JvmOverloads constructor(
             return
         }
 
-        val circleCenterWithBorder = circleCenter + borderWidth
+        val circleCenterWithBorder = circleCenter + borderWidth.toFloat()
 
         canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenterWithBorder, borderPaint)
         canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), backgroundPaint)
@@ -131,7 +135,7 @@ class CircleImageView @JvmOverloads constructor(
         heightCircle = Math.min(usableWidth, usableHeight)
 
         circleCenter = (heightCircle - borderWidth * 2).toInt() / 2
-        borderPaint.color = if (borderWidth == 0f){
+        borderPaint.color = if (borderWidth == 0){
             circleColor
         }
         else{
