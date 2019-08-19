@@ -5,6 +5,8 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -82,6 +84,28 @@ class ProfileActivity : AppCompatActivity() {
         btn_switch_theme.setOnClickListener {
             viewModel.switchTheme()
         }
+
+        et_repository.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                val pattern = """(https://)?(www.)?github.com/(\w*(-)?\w{2,}[^/])""".toRegex()
+                val message: String? = when(et_repository.text.isNullOrEmpty() || pattern.matches(et_repository.text)){
+                    //true -> null
+                    true -> {
+                        val patternExclude = """(?i)(\W|^)(enterprise|features|topics|collections|trending|events|marketplace|pricing|nonprofit|customer-stories|security|login|join)(\W|$)""".toRegex()
+                        when(patternExclude.containsMatchIn(et_repository.text)){
+                            true -> "Невалидный адрес репозитория"
+                            false -> null
+                        }
+                    }
+                    false -> "Невалидный адрес репозитория"
+                }
+                wr_repository.error = message
+                //wr_repository.error(message)
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
+        })
     }
 
     private fun showCurrentMode(isEdit: Boolean) {
@@ -121,6 +145,10 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun saveProfileInfo() {
+        if (!wr_repository.error.isNullOrEmpty()){
+            et_repository.text.clear()
+        }
+
         Profile(
             firstName = et_first_name.text.toString(),
             lastName = et_last_name.text.toString(),
