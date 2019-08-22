@@ -2,12 +2,12 @@ package ru.skillbranch.devintensive.utils
 
 object Utils {
     fun parseFullName(fullName: String?): Pair<String?, String?> {
-        var _fullName = fullName
-        if(_fullName == "" || _fullName == " "){
-            _fullName = null
+        var localFullName = fullName
+        if(localFullName == "" || localFullName == " "){
+            localFullName = null
         }
 
-        val parts: List<String>? = _fullName?.split(" ")
+        val parts: List<String>? = localFullName?.split(" ")
 
         val firstName = parts?.getOrNull(0)
         val lastName = parts?.getOrNull(1)
@@ -15,18 +15,17 @@ object Utils {
         return firstName to lastName
     }
 
-    fun toInitials(firstName: String?, lastName: String?): String? {
+    fun toInitials(firstName: String?, lastName: String?): String? =
         if(firstName.isNullOrBlank() && lastName.isNullOrBlank()){
-            return null
+            null
         }
         else if (firstName.isNullOrBlank() || lastName.isNullOrBlank()){
             var initial = if (firstName.isNullOrBlank()) lastName?.substring(0, 1) else firstName.substring(0, 1)
-            return initial?.toUpperCase()
+            initial?.toUpperCase()
         }
         else{
-            return (firstName.substring(0, 1) + lastName.substring(0, 1)).toUpperCase()
+            (firstName.substring(0, 1) + lastName.substring(0, 1)).toUpperCase()
         }
-    }
 
     fun transliteration(payload: String, divider: String = " "): String {
         val transliterationMap: Map<Char, String> = mapOf(
@@ -65,7 +64,7 @@ object Utils {
             'я' to "ya", 'Я' to "Ya",
             ' ' to divider)
 
-        var resultString: String = ""
+        var resultString = ""
 
         for (letter in payload){
             if(!transliterationMap.containsKey(letter)){

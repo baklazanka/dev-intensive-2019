@@ -1,8 +1,6 @@
 package ru.skillbranch.devintensive.ui.profile
 
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
+import android.graphics.*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -16,7 +14,10 @@ import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_profile.*
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.models.Profile
+import ru.skillbranch.devintensive.ui.custom.TextDrawable
+import ru.skillbranch.devintensive.utils.Utils
 import ru.skillbranch.devintensive.viewmodels.ProfileViewModel
+
 
 class ProfileActivity : AppCompatActivity() {
     companion object {
@@ -58,6 +59,8 @@ class ProfileActivity : AppCompatActivity() {
                 v.text = it[k].toString()
             }
         }
+
+        setAvatarDrawable()
     }
 
     private fun initViews(savedInstanceState: Bundle?) {
@@ -89,7 +92,6 @@ class ProfileActivity : AppCompatActivity() {
             override fun afterTextChanged(p0: Editable?) {
                 val pattern = """(https://)?(www.)?github.com/(\w*(-)?\w{2,}[^/])""".toRegex()
                 val message: String? = when(et_repository.text.isNullOrEmpty() || pattern.matches(et_repository.text)){
-                    //true -> null
                     true -> {
                         val patternExclude = """(?i)(\W|^)(enterprise|features|topics|collections|trending|events|marketplace|pricing|nonprofit|customer-stories|security|login|join)(\W|$)""".toRegex()
                         when(patternExclude.containsMatchIn(et_repository.text)){
@@ -100,7 +102,6 @@ class ProfileActivity : AppCompatActivity() {
                     false -> "Невалидный адрес репозитория"
                 }
                 wr_repository.error = message
-                //wr_repository.error(message)
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) { }
@@ -156,6 +157,22 @@ class ProfileActivity : AppCompatActivity() {
             repository = et_repository.text.toString()
         ).apply {
             viewModel.saveProfileData(this)
+        }
+    }
+
+    private fun setAvatarDrawable() {
+        with(iv_avatar){
+            val initials = Utils.toInitials(et_first_name.text.toString(), et_last_name.text.toString())
+            val avatar = if (initials == null){
+                setDisableCircleTransformation(false)
+                resources.getDrawable(R.drawable.avatar_default, theme)
+            }
+            else{
+                setDisableCircleTransformation(true)
+                TextDrawable(context, initials)
+            }
+
+            setImageDrawable(avatar)
         }
     }
 }

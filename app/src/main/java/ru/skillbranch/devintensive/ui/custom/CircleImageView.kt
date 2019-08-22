@@ -32,10 +32,6 @@ class CircleImageView @JvmOverloads constructor(
 
     private var borderColor = DEFAULT_BORDERCOLOR
     private var borderWidth = DEFAULT_BORDERWIDTH
-    //private var cv_borderWidth = DEFAULT_BORDERWIDTH * resources.displayMetrics.density
-
-    //fun dpToPx(dp: Int): Int = (dp * resources.displayMetrics.density).toInt()
-    //fun pxToDp(px: Int): Int = (px / resources.displayMetrics.density).toInt()
 
     private var circleColor: Int = Color.BLACK
     private var cvColorFilter: ColorFilter? = null
@@ -50,6 +46,8 @@ class CircleImageView @JvmOverloads constructor(
     private var cvBitmap: Bitmap? = null
     private var cvDrawable: Drawable? = null
 
+    private var disableCircleTransformation: Boolean = false
+
     @Dimension fun getBorderWidth(): Int = borderWidth
 
     fun setBorderWidth(@Dimension(unit = Dimension.DP) dp: Int) {
@@ -57,7 +55,9 @@ class CircleImageView @JvmOverloads constructor(
         update()
     }
 
-    fun getBorderColor(): Int = borderColor
+    fun getBorderColor(): Int {
+        return borderColor
+    }
 
     fun setBorderColor(hex: String) {
         borderColor = Color.parseColor(hex)
@@ -66,16 +66,19 @@ class CircleImageView @JvmOverloads constructor(
 
     fun setBorderColor(@ColorRes colorId: Int) {
         borderColor = resources.getColor(colorId, context.theme)
-        //borderColor = colorId
         update()
+    }
+
+    fun isDisableCircleTransformation(): Boolean = disableCircleTransformation
+
+    fun setDisableCircleTransformation(disabled: Boolean) {
+        disableCircleTransformation = disabled
     }
 
     init {
         if (attrs != null){
             val a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyleAttr, 0)
 
-            //val defaultBorderSize = DEFAULT_BORDERWIDTH * resources.displayMetrics.density
-            //borderWidth = a.getDimension(R.styleable.CircleImageView_cv_borderWidth, defaultBorderSize)
             val borderWidthPixelSize = a.getDimensionPixelSize(R.styleable.CircleImageView_cv_borderWidth, DEFAULT_BORDERWIDTH)
             borderWidth = (borderWidthPixelSize / resources.displayMetrics.density).toInt()
             borderColor = a.getColor(R.styleable.CircleImageView_cv_borderColor, DEFAULT_BORDERCOLOR)
@@ -109,6 +112,11 @@ class CircleImageView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
+        if(disableCircleTransformation){
+            super.onDraw(canvas)
+            return
+        }
+
         loadBitmap()
 
         if (cvBitmap == null){
@@ -232,7 +240,6 @@ class CircleImageView @JvmOverloads constructor(
         }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        //super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val width = measure(widthMeasureSpec)
         val height = measure(heightMeasureSpec)
         setMeasuredDimension(width, height)
@@ -248,6 +255,4 @@ class CircleImageView @JvmOverloads constructor(
             else -> heightCircle
         }
     }
-
- //(https://)?(www.)?github.com/(\w*(-)?\w{2,}[^/])    регулярка для последнего
  }
