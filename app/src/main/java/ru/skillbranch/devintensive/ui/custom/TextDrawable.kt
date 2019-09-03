@@ -12,8 +12,6 @@ class TextDrawable constructor(
 
     private var drawableText: String = ""
     private var backgroundColor: Int = Color.BLACK
-    //private var intrinsicWidth: Int = 0
-    //private var intrinsicHeight: Int = 0
     private val paint: Paint = Paint().apply { isAntiAlias = true }
 
     init {
@@ -30,16 +28,12 @@ class TextDrawable constructor(
         paint.color = backgroundColor
 
         canvas.drawCircle((width / 2).toFloat(), (height / 2).toFloat(), radius, paint)
-        //canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
 
         paint.color = Color.WHITE
         paint.textSize = textSize
         paint.style = Paint.Style.FILL
         paint.textAlign = Paint.Align.CENTER
         paint.isFakeBoldText = true
-
-        //intrinsicWidth = (paint.measureText(drawableText, 0, drawableText.length) + .5).toInt()
-        //intrinsicHeight = paint.getFontMetricsInt(null)
 
         canvas.drawText(drawableText, width / 2f, height / 2f - (paint.descent() + paint.ascent()) / 2, paint)
     }
@@ -53,8 +47,4 @@ class TextDrawable constructor(
     }
 
     override fun getOpacity(): Int = PixelFormat.OPAQUE
-
-    //override fun getIntrinsicWidth(): Int = intrinsicWidth
-
-    //override fun getIntrinsicHeight(): Int = intrinsicHeight
 }

@@ -23,7 +23,7 @@ class CircleImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-): ImageView(context, attrs, defStyleAttr) {
+) : ImageView(context, attrs, defStyleAttr) {
 
     companion object{
         private const val DEFAULT_BORDERCOLOR = Color.WHITE
@@ -32,20 +32,15 @@ class CircleImageView @JvmOverloads constructor(
 
     private var borderColor = DEFAULT_BORDERCOLOR
     private var borderWidth = DEFAULT_BORDERWIDTH
-
     private var circleColor: Int = Color.BLACK
     private var cvColorFilter: ColorFilter? = null
-
     private val paint: Paint = Paint().apply { isAntiAlias = true }
     private val borderPaint: Paint = Paint().apply { isAntiAlias = true }
     private val backgroundPaint: Paint = Paint().apply { isAntiAlias = true }
-
     private var circleCenter = 0
     private var heightCircle: Int = 0
-
     private var cvBitmap: Bitmap? = null
     private var cvDrawable: Drawable? = null
-
     private var disableCircleTransformation: Boolean = false
 
     @Dimension fun getBorderWidth(): Int = borderWidth
