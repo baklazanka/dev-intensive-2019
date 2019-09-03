@@ -1,5 +1,6 @@
-package ru.skillbranch.devintensive.models
+package ru.skillbranch.devintensive.models.data
 
+import ru.skillbranch.devintensive.extensions.humanizeDiff
 import ru.skillbranch.devintensive.utils.Utils
 import java.util.*
 
@@ -10,9 +11,27 @@ data class User(
     var avatar: String?,
     var rating: Int = 0,
     var respect: Int = 0,
-    var lastVisit: Date? = Date(),
-    var isOnline: Boolean = false
+    val lastVisit: Date? = null,
+    val isOnline: Boolean = false
 ) {
+    fun toUserItem(): UserItem {
+        val lastActivity = when{
+            lastVisit == null -> "Еще ни разу не заходил"
+            isOnline -> "online"
+            else -> "Последний раз был ${lastVisit.humanizeDiff()}"
+        }
+
+        return UserItem(
+            id,
+            "${firstName.orEmpty()} ${lastName.orEmpty()}",
+            Utils.toInitials(firstName, lastName),
+            avatar,
+            lastActivity,
+            false,
+            isOnline
+        )
+    }
+
     constructor(id: String, firstName: String?, lastName: String?): this(
         id = id,
         firstName = firstName,
@@ -22,22 +41,22 @@ data class User(
 
     constructor(id: String): this(id, "John", "Doe")
 
-    init {
-        println("His name is $firstName $lastName")
-    }
-
     companion object Factory{
         private var lastId: Int = -1
 
-        fun makeUser(fullName: String?): User{
+        fun makeUser(fullName: String?): User {
             lastId++
 
             val (firstName, lastName) = Utils.parseFullName(fullName)
-            return User("$lastId", firstName = firstName, lastName = lastName)
+            return User(
+                "$lastId",
+                firstName = firstName,
+                lastName = lastName
+            )
         }
     }
 
-    class Builder(){
+    class Builder {
         private var id: String = ""
         private var firstName: String? = null
         private var lastName: String? = null
@@ -56,6 +75,15 @@ data class User(
         fun lastVisit(lastVisit: Date?) = apply { this.lastVisit = lastVisit }
         fun isOnline(isOnline: Boolean) = apply { this.isOnline = isOnline }
 
-        fun build() = User(id, firstName, lastName, avatar, rating, respect, lastVisit, isOnline)
+        fun build() = User(
+            id,
+            firstName,
+            lastName,
+            avatar,
+            rating,
+            respect,
+            lastVisit,
+            isOnline
+        )
     }
 }
