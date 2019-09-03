@@ -36,6 +36,10 @@ class AvatarImageView @JvmOverloads constructor(
         private const val DEFAULT_BORDER_COLOR = Color.WHITE
     }
 
+
+    // Ниже уже своя реализация
+
+
     init {
         if (attrs != null){
             val a = context.obtainStyledAttributes(attrs, R.styleable.AvatarImageView, defStyleAttr, 0)
@@ -51,9 +55,7 @@ class AvatarImageView @JvmOverloads constructor(
         borderWidth = dp
     }
 
-    fun getBorderColor(): Int {
-        return borderColor
-    }
+    fun getBorderColor(): Int = borderColor
 
     fun setBorderColor(hex: String) {
         borderColor = Color.parseColor(hex)
@@ -66,21 +68,10 @@ class AvatarImageView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        val radius: Float = Math.min(canvas!!.width, canvas.height) / 2f
-
-        paintBorder.color = Color.parseColor(bgColors[0])
-        //canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenterWithBorder, paintBorder)
-        canvas.drawCircle((canvas.width / 2).toFloat(), (canvas.height / 2).toFloat(), radius, paintBorder)
-
-        //canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paintBorder)
-
-        paintText.color = Color.WHITE
-        paintText.textSize = radius
-        paintText.style = Paint.Style.FILL
-        paintText.textAlign = Paint.Align.CENTER
-        paintText.isFakeBoldText = true
-
-        canvas.drawText("??", canvas.width / 2f, canvas.height / 2f - (paintText.descent() + paintText.ascent()) / 2, paintText)
+//        val radius: Float = Math.min(canvas!!.width, canvas.height) / 2f
+//
+//        paintBorder.color = Color.parseColor(bgColors[0])
+//        canvas.drawCircle((canvas.width / 2).toFloat(), (canvas.height / 2).toFloat(), radius, paintBorder)
     }
 
     fun setInitials(initials: String) {

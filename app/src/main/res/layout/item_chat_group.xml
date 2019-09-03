@@ -11,7 +11,9 @@
             android:layout_width="@dimen/avatar_item_size"
             android:layout_height="@dimen/avatar_item_size"
             android:layout_marginRight="@dimen/spacing_normal_16"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+
+            android:src="@drawable/avatar_default"/>
 
     <TextView
             android:id="@+id/tv_title_group"

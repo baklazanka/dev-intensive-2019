@@ -63,4 +63,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         viewModel.getChatData().observe(this, Observer { chatAdapter.updateDate(it) })
     }
+
+    //что нибудь насчет divider'а можете пожалуйста подсказать?
+    //надо унаследоваться от RecyclerView.ItemDecoration и переопределить onDraw и исспользовать данную реализацию
 }

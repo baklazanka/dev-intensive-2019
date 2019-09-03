@@ -15,23 +15,25 @@ data class Chat(
     var messages: MutableList<BaseMessage> = mutableListOf(),
     var isArchived: Boolean = false
 ) {
-    //@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun unreadableMessageCount(): Int {
         //TODO implement me
         return 0
     }
 
-    //@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun lastMessageDate(): Date? {
         //TODO implement me
         return Date()
     }
 
-    //@VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun lastMessageShort(): Pair<String?, String?> {//= when(val lastMessage = messages.lastOrNull()){
-        ////TODO implement me
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun lastMessageShort(): Pair<String?, String?> = when(val lastMessage = messages.lastOrNull()){
+        //TODO implement me
         // 128 символов будет достаточно
-        return "Сообщений нет" to "@John_Doe"
+        //return "Сообщений нет" to "@John_Doe"
+        else -> "Сообщений нет" to "@John_Doe"
     }
 
     private fun isSingle(): Boolean = members.size == 1
