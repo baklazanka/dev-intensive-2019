@@ -66,23 +66,12 @@ class AvatarImageView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas?) {
-        //super.onDraw(canvas)
+        super.onDraw(canvas)
 
-        val radius: Float = Math.min(canvas!!.width, canvas.height) / 2f
-
-        paintBorder.color = Color.parseColor(bgColors[0])
-        //canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenterWithBorder, paintBorder)
-        canvas.drawCircle((canvas.width / 2).toFloat(), (canvas.height / 2).toFloat(), radius, paintBorder)
-
-        //canvas.drawCircle(circleCenterWithBorder, circleCenterWithBorder, circleCenter.toFloat(), paintBorder)
-
-/*        paintText.color = Color.WHITE
-        paintText.textSize = radius
-        paintText.style = Paint.Style.FILL
-        paintText.textAlign = Paint.Align.CENTER
-        paintText.isFakeBoldText = true
-
-        canvas.drawText("??", canvas.width / 2f, canvas.height / 2f - (paintText.descent() + paintText.ascent()) / 2, paintText)*/
+//        val radius: Float = Math.min(canvas!!.width, canvas.height) / 2f
+//
+//        paintBorder.color = Color.parseColor(bgColors[0])
+//        canvas.drawCircle((canvas.width / 2).toFloat(), (canvas.height / 2).toFloat(), radius, paintBorder)
     }
 
     fun setInitials(initials: String) {
