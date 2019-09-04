@@ -6,9 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.SearchEvent
 import android.view.View
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.children
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders

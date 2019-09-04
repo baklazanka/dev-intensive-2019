@@ -19,7 +19,8 @@ data class Chat(
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun unreadableMessageCount(): Int {
         //TODO implement me
-        return 0
+        return messages.filter { it.isReaded == false }.size
+        //return 0
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
