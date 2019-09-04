@@ -89,7 +89,7 @@ class ChatItemTouchHelperCallback(
 
     private fun drawBackground(canvas: Canvas, itemView: View, dX: Float) {
         with(bgRect){
-            left = dX //itemView.left поставить у себя что-то такое. Просто dX, это неправильно, отрисовывается слишком слева. Можно посмотреть формулы в презентации
+            left = itemView.right + dX
             top = itemView.top.toFloat()
             right = itemView.right.toFloat()
             bottom = itemView.bottom.toFloat()

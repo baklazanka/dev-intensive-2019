@@ -42,8 +42,9 @@ class MainActivity : AppCompatActivity() {
         val touchCallback = ChatItemTouchHelperCallback(chatAdapter){
             val chatItemId = it.id
             viewModel.addToArchive(chatItemId)
+            //viewModel.addToArchive(it.id)
             Snackbar.make(rv_chat_list, "Вы точно хотите добавить ${it.title} в архив?", Snackbar.LENGTH_LONG)
-                .setAction("Отменить", View.OnClickListener { viewModel.restoreFromArchive(chatItemId) })
+                .setAction("ОТМЕНА", View.OnClickListener { viewModel.restoreFromArchive(chatItemId) })
                 .show()
         }
         val touchHelper = ItemTouchHelper(touchCallback)
@@ -68,4 +69,6 @@ class MainActivity : AppCompatActivity() {
 
     //что нибудь насчет divider'а можете пожалуйста подсказать?
     //надо унаследоваться от RecyclerView.ItemDecoration и переопределить onDraw и исспользовать данную реализацию
+
+    // Еще нужна реализация AvatarView
 }
