@@ -27,7 +27,6 @@ class MainViewModel: ViewModel() {
     }
 
     fun restoreFromArchive(chatId: String) {
-        // Сделать самостоятельно????
         val chat = chatRepository.find(chatId)
         chat ?: return
         chatRepository.update(chat.copy(isArchived = false))

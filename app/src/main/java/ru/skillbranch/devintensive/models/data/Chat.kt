@@ -17,25 +17,17 @@ data class Chat(
 ) {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun unreadableMessageCount(): Int {
-        //TODO implement me
-        return messages.filter { it.isReaded == false }.size
-        //return 0
-    }
+    fun unreadableMessageCount(): Int = messages.filter { !it.isReaded }.size
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    fun lastMessageDate(): Date? {
-        //TODO implement me
-        return Date()
-    }
+    fun lastMessageDate(): Date? = messages.lastOrNull()?.date
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun lastMessageShort(): Pair<String?, String?> = when(val lastMessage = messages.lastOrNull()){
-        //TODO implement me
-        // 128 символов будет достаточно
-        //return "Сообщений нет" to "@John_Doe"
-        else -> "Сообщений нет" to "@John_Doe"
-    }
+            is TextMessage -> lastMessage.text to lastMessage.from.firstName
+            is ImageMessage -> "${lastMessage.from.firstName} - отправил фото" to lastMessage.from.firstName
+            else -> null to lastMessage?.from?.firstName
+        }
 
     private fun isSingle(): Boolean = members.size == 1
 
