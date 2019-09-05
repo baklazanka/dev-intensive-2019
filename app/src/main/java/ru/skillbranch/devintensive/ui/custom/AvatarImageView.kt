@@ -14,7 +14,8 @@ class AvatarImageView @JvmOverloads constructor(
 ) : ImageView(context, attrs, defStyleAttr) {
 
     private var avatarSize: Int = 0
-    private var rect: Rect = Rect()
+//    private var rect: Rect = Rect()
+    private var rect: RectF = RectF()
     private var pathR: Path = Path()
     private lateinit var paintText: Paint
     private lateinit var paintBorder: Paint
@@ -66,15 +67,28 @@ class AvatarImageView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
+        val radius = height / 2f
 
-//        val radius: Float = Math.min(canvas!!.width, canvas.height) / 2f
-//
-//        paintBorder.color = Color.parseColor(bgColors[0])
-//        canvas.drawCircle((canvas.width / 2).toFloat(), (canvas.height / 2).toFloat(), radius, paintBorder)
+        with(rect){
+            left = 0f
+            top = 0f
+            right = width.toFloat()
+            bottom = height.toFloat()
+        }
+
+        pathR.addRoundRect(rect, radius, radius, Path.Direction.CW)
+        canvas?.clipPath(pathR)
+
+        super.onDraw(canvas)
     }
 
     fun setInitials(initials: String) {
         this.initials = initials
+
+        // здесь, видимо, инициалы нужно нарисовать
+
+
+
+        invalidate()
     }
 }

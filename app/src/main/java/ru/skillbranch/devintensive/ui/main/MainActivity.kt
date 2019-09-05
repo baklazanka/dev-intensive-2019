@@ -93,4 +93,6 @@ class MainActivity : AppCompatActivity() {
     //надо унаследоваться от RecyclerView.ItemDecoration и переопределить onDraw и исспользовать данную реализацию
 
     // Еще нужна реализация AvatarView
+
+    // Чтобы вывести архив, почитать здесь https://medium.com/@gilbertchristopher/a-recyclerview-with-multiple-view-type-22619a5ad365
 }
