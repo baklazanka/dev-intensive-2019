@@ -28,10 +28,18 @@ class ChatAdapter(
 
     var items: List<ChatItem> = listOf()
 
-    override fun getItemViewType(position: Int): Int = when(items[position].chatType){
-        ChatType.ARCHIVE -> ARCHIVE_TYPE
-        ChatType.SINGLE -> SINGLE_TYPE
-        ChatType.GROUP -> GROUP_TYPE
+//    override fun getItemViewType(position: Int): Int = when(items[position].chatType){
+//        ChatType.ARCHIVE -> ARCHIVE_TYPE
+//        ChatType.SINGLE -> SINGLE_TYPE
+//        ChatType.GROUP -> GROUP_TYPE
+//    }
+    override fun getItemViewType(position: Int): Int = when (position) {
+        0 -> ARCHIVE_TYPE
+        else -> when(items[position-1].chatType){
+            ChatType.ARCHIVE -> ARCHIVE_TYPE
+            ChatType.SINGLE -> SINGLE_TYPE
+            ChatType.GROUP -> GROUP_TYPE
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatItemViewHolder {
@@ -39,11 +47,13 @@ class ChatAdapter(
         return when(viewType){
             SINGLE_TYPE -> SingleViewHolder(inflater.inflate(R.layout.item_chat_single, parent, false))
             GROUP_TYPE -> GroupViewHolder(inflater.inflate(R.layout.item_chat_group, parent, false))
-            else -> ArchiveViewHolder(inflater.inflate(R.layout.item_chat_archive, parent, false))
+            ARCHIVE_TYPE -> ArchiveViewHolder(inflater.inflate(R.layout.item_chat_archive, parent, false))
+            else -> throw RuntimeException("There is no type that matches the type $viewType, make sure your using types correctly")
         }
     }
 
-    override fun getItemCount(): Int = items.size
+    //override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = items.size + 1
 
     override fun onBindViewHolder(holder: ChatItemViewHolder, position: Int) {
         Log.d("M_ChatAdapter","onBindViewHolder $position")

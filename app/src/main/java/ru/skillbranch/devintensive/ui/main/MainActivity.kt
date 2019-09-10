@@ -95,4 +95,5 @@ class MainActivity : AppCompatActivity() {
 
     // Чтобы вывести архив, почитать здесь https://medium.com/@gilbertchristopher/a-recyclerview-with-multiple-view-type-22619a5ad365
     // Еще про выводы списка https://teletype.in/@skillbranch/ByKBkWjQS
+    // И еще здесь https://codelabs.developers.google.com/codelabs/kotlin-android-training-headers/#2
 }
