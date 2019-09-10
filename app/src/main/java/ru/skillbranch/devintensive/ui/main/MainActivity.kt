@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.ui.adapters.ChatAdapter
 import ru.skillbranch.devintensive.ui.adapters.ChatItemTouchHelperCallback
+import ru.skillbranch.devintensive.ui.custom.ChatDividerItemDecoration
 import ru.skillbranch.devintensive.ui.group.GroupActivity
 import ru.skillbranch.devintensive.viewmodels.MainViewModel
 
@@ -60,7 +61,8 @@ class MainActivity : AppCompatActivity() {
             Snackbar.make(rv_chat_list, "Click on ${it.title}", Snackbar.LENGTH_LONG).show()
         }
 
-        val divider = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        //val divider = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        val divider = ChatDividerItemDecoration(this)
         val touchCallback = ChatItemTouchHelperCallback(chatAdapter){
             val chatItemId = it.id
             viewModel.addToArchive(chatItemId)
@@ -89,10 +91,8 @@ class MainActivity : AppCompatActivity() {
         viewModel.getChatData().observe(this, Observer { chatAdapter.updateDate(it) })
     }
 
-    //что нибудь насчет divider'а можете пожалуйста подсказать?
-    //надо унаследоваться от RecyclerView.ItemDecoration и переопределить onDraw и исспользовать данную реализацию
-
     // Еще нужна реализация AvatarView
 
     // Чтобы вывести архив, почитать здесь https://medium.com/@gilbertchristopher/a-recyclerview-with-multiple-view-type-22619a5ad365
+    // Еще про выводы списка https://teletype.in/@skillbranch/ByKBkWjQS
 }

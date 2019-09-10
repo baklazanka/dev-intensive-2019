@@ -98,12 +98,9 @@ class CircleImageView @JvmOverloads constructor(
     }
 
     override fun setScaleType(scaleType: ScaleType?) {
-        if (scaleType != ScaleType.CENTER_CROP && scaleType != ScaleType.CENTER_INSIDE) {
-            throw IllegalArgumentException(String.format("ScaleType %s not supported. " +
-                    "Just ScaleType.CENTER_CROP & ScaleType.CENTER_INSIDE are available for this library.", scaleType))
-        } else {
-            super.setScaleType(scaleType)
-        }
+        require(!(scaleType != ScaleType.CENTER_CROP && scaleType != ScaleType.CENTER_INSIDE)) { String.format("ScaleType %s not supported. " +
+            "Just ScaleType.CENTER_CROP & ScaleType.CENTER_INSIDE are available for this library.", scaleType) }
+        super.setScaleType(scaleType)
     }
 
     override fun onDraw(canvas: Canvas) {

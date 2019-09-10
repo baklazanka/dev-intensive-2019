@@ -15,14 +15,10 @@ data class Chat(
     var messages: MutableList<BaseMessage> = mutableListOf(),
     var isArchived: Boolean = false
 ) {
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun unreadableMessageCount(): Int = messages.filter { !it.isReaded }.size
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun lastMessageDate(): Date? = messages.lastOrNull()?.date
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     fun lastMessageShort(): Pair<String?, String?> = when(val lastMessage = messages.lastOrNull()){
             is TextMessage -> lastMessage.text to lastMessage.from.firstName
             is ImageMessage -> "${lastMessage.from.firstName} - отправил фото" to lastMessage.from.firstName
