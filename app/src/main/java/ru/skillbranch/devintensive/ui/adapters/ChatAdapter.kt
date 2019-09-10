@@ -184,10 +184,13 @@ class ChatAdapter(
 
             with(tv_counter_archive){
                 visibility = if (item.messageCount > 0) View.VISIBLE else View.GONE
-                text = item.messageCount.toString()
+                text = items.filter { it.chatType == ChatType.ARCHIVE }.sumBy { it.messageCount }.toString()
             }
 
             tv_message_archive.text = item.shortDescription
+//            tv_message_archive.text =
+//                items.filter { it.chatType == ChatType.ARCHIVE }.maxBy { it.lastMessageDate }
+//                ?.shortDescription
 
             with(tv_message_author_archive){
                 visibility = if (item.messageCount > 0) View.VISIBLE else View.GONE

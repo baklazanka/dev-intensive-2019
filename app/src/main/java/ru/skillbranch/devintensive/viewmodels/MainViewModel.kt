@@ -34,6 +34,30 @@ class MainViewModel: ViewModel() {
         return result
     }
 
+//    fun getChatData(): LiveData<List<ChatItem>> {
+//        val result = MediatorLiveData<List<ChatItem>>()
+//
+//        val filterF = {
+//            val queryStr = query.value!!
+//            var chats = chatItems.value!!.toMutableList()
+//
+//            val chatItem = getLastArchivedChatItem()
+//            if(chatItem != null) {
+//                chats.add(0, getLastArchivedChatItem()!!)
+//            }
+//
+//            result.value = if (queryStr.isEmpty()) chats
+//            else chats.filter { it.title.contains(queryStr, true) }
+//        }
+//
+//        result.addSource(chatItems) { filterF.invoke() }
+//        result.addSource(query) { filterF.invoke() }
+//
+//
+//
+//        return result
+//    }
+
     fun addToArchive(chatId: String) {
         val chat = chatRepository.find(chatId)
         chat ?: return
