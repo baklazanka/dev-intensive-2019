@@ -28,18 +28,10 @@ class ChatAdapter(
 
     var items: List<ChatItem> = listOf()
 
-//    override fun getItemViewType(position: Int): Int = when(items[position].chatType){
-//        ChatType.ARCHIVE -> ARCHIVE_TYPE
-//        ChatType.SINGLE -> SINGLE_TYPE
-//        ChatType.GROUP -> GROUP_TYPE
-//    }
-    override fun getItemViewType(position: Int): Int = when (position) {
-        0 -> ARCHIVE_TYPE
-        else -> when(items[position-1].chatType){
-            ChatType.ARCHIVE -> ARCHIVE_TYPE
-            ChatType.SINGLE -> SINGLE_TYPE
-            ChatType.GROUP -> GROUP_TYPE
-        }
+    override fun getItemViewType(position: Int): Int = when(items[position].chatType){
+        ChatType.ARCHIVE -> ARCHIVE_TYPE
+        ChatType.SINGLE -> SINGLE_TYPE
+        ChatType.GROUP -> GROUP_TYPE
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatItemViewHolder {
@@ -52,8 +44,7 @@ class ChatAdapter(
         }
     }
 
-    //override fun getItemCount(): Int = items.size
-    override fun getItemCount(): Int = items.size + 1
+    override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: ChatItemViewHolder, position: Int) {
         Log.d("M_ChatAdapter","onBindViewHolder $position")
@@ -184,13 +175,10 @@ class ChatAdapter(
 
             with(tv_counter_archive){
                 visibility = if (item.messageCount > 0) View.VISIBLE else View.GONE
-                text = items.filter { it.chatType == ChatType.ARCHIVE }.sumBy { it.messageCount }.toString()
+                text = item.messageCount.toString()
             }
 
             tv_message_archive.text = item.shortDescription
-//            tv_message_archive.text =
-//                items.filter { it.chatType == ChatType.ARCHIVE }.maxBy { it.lastMessageDate }
-//                ?.shortDescription
 
             with(tv_message_author_archive){
                 visibility = if (item.messageCount > 0) View.VISIBLE else View.GONE
