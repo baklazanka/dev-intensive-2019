@@ -184,10 +184,6 @@ class ChatAdapter(
                 visibility = if (item.messageCount > 0) View.VISIBLE else View.GONE
                 text = item.author
             }
-
-            itemView.setOnClickListener{
-                listener.invoke(item)
-            }
         }
     }
 }

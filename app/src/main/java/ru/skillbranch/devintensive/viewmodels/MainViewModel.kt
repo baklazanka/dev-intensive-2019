@@ -42,28 +42,6 @@ class MainViewModel: ViewModel() {
     }
 
     private fun getChatArchiveItem(): ChatItem? {
-//        val archivedChats = chatRepository.loadChats().value!!
-//            .filter { it.isArchived }
-//            .map { it.toChatItem() }
-//
-//        val chatArchiveItem = archivedChats.maxBy { it.id.toInt() }
-//
-//        return if (chatArchiveItem == null){
-//            null
-//        } else{
-//            ChatItem(
-//                chatArchiveItem.id,
-//                chatArchiveItem.avatar,
-//                chatArchiveItem.initials,
-//                chatArchiveItem.title,
-//                chatArchiveItem.shortDescription,
-//                archivedChats.sumBy { it.messageCount },
-//                chatArchiveItem.lastMessageDate,
-//                chatArchiveItem.isOnline,
-//                ChatType.ARCHIVE,
-//                chatArchiveItem.author
-//            )
-//        }
         val archivedChats = chatRepository.loadChats().value!!.filter { it.isArchived }
         val lastChatArchive = archivedChats.maxBy { it.id.toInt() }
 

@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.models.data.ChatItem
+import ru.skillbranch.devintensive.models.data.ChatType
 
 class ChatItemTouchHelperCallback(
-    val adapter: ChatAdapter,
-    val swipeListener: (ChatItem)->Unit
+    private val adapter: ChatAdapter,
+    private val swipeListener: (ChatItem)->Unit
 ) : ItemTouchHelper.Callback() {
 
     private val bgRect = RectF()
@@ -21,7 +22,11 @@ class ChatItemTouchHelperCallback(
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
         return if (viewHolder is ItemTouchViewHolder){
-            makeFlag(ItemTouchHelper.ACTION_STATE_SWIPE, ItemTouchHelper.START)
+            if (adapter.items[viewHolder.adapterPosition].chatType == ChatType.ARCHIVE){
+                makeFlag(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.START)
+            } else{
+                makeFlag(ItemTouchHelper.ACTION_STATE_SWIPE, ItemTouchHelper.START)
+            }
         }
         else{
             makeFlag(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.START)
