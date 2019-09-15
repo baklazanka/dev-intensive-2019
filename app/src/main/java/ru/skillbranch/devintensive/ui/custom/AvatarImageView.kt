@@ -67,17 +67,17 @@ class AvatarImageView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas?) {
-        val radius = height / 2f
-
-        with(rect){
-            left = 0f
-            top = 0f
-            right = width.toFloat()
-            bottom = height.toFloat()
-        }
-
-        pathR.addRoundRect(rect, radius, radius, Path.Direction.CW)
-        canvas?.clipPath(pathR)
+//        val radius = height / 2f
+//
+//        with(rect){
+//            left = 0f
+//            top = 0f
+//            right = width.toFloat()
+//            bottom = height.toFloat()
+//        }
+//
+//        pathR.addRoundRect(rect, radius, radius, Path.Direction.CW)
+//        canvas?.clipPath(pathR)
 
         super.onDraw(canvas)
     }
@@ -89,6 +89,6 @@ class AvatarImageView @JvmOverloads constructor(
 
 
 
-        invalidate()
+        //invalidate()
     }
 }
