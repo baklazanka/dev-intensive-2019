@@ -17,11 +17,13 @@ import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.models.data.ChatType
 import ru.skillbranch.devintensive.ui.adapters.ChatAdapter
 import ru.skillbranch.devintensive.ui.adapters.ChatItemTouchHelperCallback
+import ru.skillbranch.devintensive.ui.archive.ArchiveActivity
 import ru.skillbranch.devintensive.ui.custom.ChatDividerItemDecoration
 import ru.skillbranch.devintensive.ui.group.GroupActivity
 import ru.skillbranch.devintensive.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var chatAdapter: ChatAdapter
     private lateinit var viewModel: MainViewModel
 
@@ -59,7 +61,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun initViews() {
         chatAdapter = ChatAdapter{
-            Snackbar.make(rv_chat_list, "Click on ${it.title}", Snackbar.LENGTH_LONG).show()
+            if(it.chatType == ChatType.ARCHIVE){
+                val intent = Intent(this, ArchiveActivity::class.java)
+                startActivity(intent)
+            }
+            else{
+                Snackbar.make(rv_chat_list, "Click on ${it.title}", Snackbar.LENGTH_LONG).show()
+            }
         }
 
         //val divider = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
@@ -94,8 +102,4 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Еще нужна реализация AvatarView
-
-    // Чтобы вывести архив, почитать здесь https://medium.com/@gilbertchristopher/a-recyclerview-with-multiple-view-type-22619a5ad365
-    // Еще про выводы списка https://teletype.in/@skillbranch/ByKBkWjQS
-    // И еще здесь https://codelabs.developers.google.com/codelabs/kotlin-android-training-headers/#2
 }
