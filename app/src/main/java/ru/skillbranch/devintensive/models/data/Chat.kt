@@ -18,16 +18,16 @@ data class Chat(
 
     fun lastMessageDate(): Date? = messages.lastOrNull()?.date
 
+    fun lastMessageShort(): Pair<String?, String?> = when(val lastMessage = messages.lastOrNull()){
+        is TextMessage -> lastMessage.text to "@${lastMessage.from.firstName ?: ""} ${lastMessage.from.lastName ?: ""}"
+        is ImageMessage -> "${lastMessage.from.firstName} - отправил фото" to "@${lastMessage.from.firstName ?: ""} ${lastMessage.from.lastName ?: ""}"
+        else -> "Сообщений еще нет" to "@${lastMessage?.from?.firstName ?: ""} ${lastMessage?.from?.lastName ?: ""}"
+    }
 //    fun lastMessageShort(): Pair<String?, String?> = when(val lastMessage = messages.lastOrNull()){
-//            is TextMessage -> lastMessage.text to "@${lastMessage.from.firstName ?: ""} ${lastMessage.from.lastName ?: ""}"
-//            is ImageMessage -> "${lastMessage.from.firstName} - отправил фото" to "@${lastMessage.from.firstName ?: ""} ${lastMessage.from.lastName ?: ""}"
-//            else -> "Сообщений еще нет" to "@${lastMessage?.from?.firstName ?: ""} ${lastMessage?.from?.lastName ?: ""}"
-//        }
-fun lastMessageShort(): Pair<String?, String?> = when(val lastMessage = messages.lastOrNull()){
-    is TextMessage -> lastMessage.text to "${lastMessage.from.firstName ?: ""}"
-    is ImageMessage -> "${lastMessage.from.firstName} - отправил фото" to "${lastMessage.from.firstName ?: ""}"
-    else -> "Сообщений еще нет" to "${lastMessage?.from?.firstName ?: ""}"
-}
+//        is TextMessage -> lastMessage.text to "${lastMessage.from.firstName ?: ""}"
+//        is ImageMessage -> "${lastMessage.from.firstName} - отправил фото" to "${lastMessage.from.firstName ?: ""}"
+//        else -> "Сообщений еще нет" to "${lastMessage?.from?.firstName ?: ""}"
+//    }
 
     private fun isSingle(): Boolean = members.size == 1
 
