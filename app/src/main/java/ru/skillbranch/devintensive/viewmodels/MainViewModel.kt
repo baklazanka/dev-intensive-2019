@@ -53,7 +53,7 @@ class MainViewModel : ViewModel() {
                 null,
                 "",
                 "",
-                lastChatArchive.lastMessageShort().first,
+                "@${lastChatArchive.lastMessageShort().first}",
                 archivedChats.sumBy { it.unreadableMessageCount() },
                 lastChatArchive.lastMessageDate()?.shortFormat(),
                 false,
