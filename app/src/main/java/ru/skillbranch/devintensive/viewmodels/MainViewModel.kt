@@ -1,5 +1,6 @@
  package ru.skillbranch.devintensive.viewmodels
 
+import android.content.res.Resources
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
@@ -52,13 +53,15 @@ class MainViewModel : ViewModel() {
                 lastChatArchive.id,
                 null,
                 "",
-                "",
+                "Архив чатов",
                 lastChatArchive.lastMessageShort().first,
                 archivedChats.sumBy { it.unreadableMessageCount() },
                 lastChatArchive.lastMessageDate()?.shortFormat(),
                 false,
                 ChatType.ARCHIVE,
                 "@${lastChatArchive.lastMessageShort().second}"
+                // ag
+                //lastChatArchive.lastMessageShort().second
             )
         }
     }

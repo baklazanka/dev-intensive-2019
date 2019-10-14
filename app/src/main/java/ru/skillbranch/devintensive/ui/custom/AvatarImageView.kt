@@ -17,8 +17,8 @@ class AvatarImageView @JvmOverloads constructor(
 //    private var rect: Rect = Rect()
     private var rect: RectF = RectF()
     private var pathR: Path = Path()
-    private lateinit var paintText: Paint
-    private lateinit var paintBorder: Paint
+    private var paintText: Paint = Paint().apply { isAntiAlias = true }
+    private var paintBorder: Paint = Paint().apply { isAntiAlias = true }
     private var borderWidth: Float = DEFAULT_BORDER_WIDTH
     private var borderColor: Int = DEFAULT_BORDER_COLOR
     private var initials: String? = null
@@ -67,6 +67,14 @@ class AvatarImageView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas?) {
+        paintBorder.style = Paint.Style.FILL
+        //paintBorder.color = Color.parseColor(bgColors[4])
+        paintBorder.color = when {
+            initials.isNullOrEmpty() -> Color.parseColor(bgColors[0])
+            initials!!.length == 2 -> Color.parseColor(bgColors[5])
+            else -> Color.parseColor(bgColors[4])
+        }
+
         val radius = height / 2f
 
         with(rect){
@@ -78,17 +86,21 @@ class AvatarImageView @JvmOverloads constructor(
 
         pathR.addRoundRect(rect, radius, radius, Path.Direction.CW)
         canvas?.clipPath(pathR)
+        canvas?.drawPath(pathR, paintBorder)
+
+        paintText.color = Color.WHITE
+        paintText.textSize = radius
+        paintText.style = Paint.Style.FILL
+        paintText.textAlign = Paint.Align.CENTER
+        paintText.isFakeBoldText = true
+
+        if (initials.isNullOrEmpty()) initials = "??"
+        canvas?.drawText(initials!!, radius, radius - (paintText.descent() + paintText.ascent()) / 2, paintText)
 
         super.onDraw(canvas)
     }
 
     fun setInitials(initials: String) {
         this.initials = initials
-
-        // здесь, видимо, инициалы нужно нарисовать
-
-
-
-        //invalidate()
     }
 }
