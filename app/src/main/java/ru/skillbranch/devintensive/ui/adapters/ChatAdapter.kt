@@ -80,11 +80,11 @@ class ChatAdapter(
     inner class SingleViewHolder(convertView: View) : ChatItemViewHolder(convertView), ItemTouchViewHolder {
 
         override fun onItemSelected() {
-            itemView.setBackgroundColor(Color.LTGRAY)
+            //itemView.setBackgroundColor(Color.LTGRAY)
         }
 
         override fun onItemCleared() {
-            itemView.setBackgroundColor(Color.WHITE)
+            //itemView.setBackgroundColor(Color.WHITE)
         }
 
         override fun bind(item: ChatItem, listener: (ChatItem) -> Unit){
@@ -123,11 +123,11 @@ class ChatAdapter(
     inner class GroupViewHolder(convertView: View) : ChatItemViewHolder(convertView), ItemTouchViewHolder {
 
         override fun onItemSelected() {
-            itemView.setBackgroundColor(Color.LTGRAY)
+            //itemView.setBackgroundColor(Color.LTGRAY)
         }
 
         override fun onItemCleared() {
-            itemView.setBackgroundColor(Color.WHITE)
+            //itemView.setBackgroundColor(Color.WHITE)
         }
 
         override fun bind(item: ChatItem, listener: (ChatItem) -> Unit){
@@ -160,11 +160,11 @@ class ChatAdapter(
     inner class ArchiveViewHolder(convertView: View) : ChatItemViewHolder(convertView), ItemTouchViewHolder {
 
         override fun onItemSelected() {
-            itemView.setBackgroundColor(Color.LTGRAY)
+            //itemView.setBackgroundColor(Color.LTGRAY)
         }
 
         override fun onItemCleared() {
-            itemView.setBackgroundColor(Color.WHITE)
+            //itemView.setBackgroundColor(Color.WHITE)
         }
 
         override fun bind(item: ChatItem, listener: (ChatItem) -> Unit){

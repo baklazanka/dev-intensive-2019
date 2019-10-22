@@ -5,6 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="?attr/colorGrayVeryLight"
         tools:context=".ui.group.GroupActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -16,6 +17,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
         </androidx.appcompat.widget.Toolbar>
@@ -36,7 +38,8 @@
                 android:paddingRight="@dimen/spacing_normal_16"
                 android:layout_marginTop="@dimen/spacing_small_8"
                 android:layout_marginBottom="@dimen/spacing_small_8"
-                android:visibility="gone">
+                android:visibility="gone"
+                android:background="?attr/colorGrayVeryLight">
 
         </com.google.android.material.chip.ChipGroup>
 

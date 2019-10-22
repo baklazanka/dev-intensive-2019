@@ -64,4 +64,7 @@
         <item name="android:minHeight">72dp</item>
     </style>
 
+    <style name="SnackbarStyle" parent="Widget.MaterialComponents.Snackbar">
+        <item name="android:background">@drawable/snackbar_background_theme</item>
+    </style>
 </resources>

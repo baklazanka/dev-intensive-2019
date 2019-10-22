@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.extensions.mutableLiveData
 import ru.skillbranch.devintensive.extensions.shortFormat
 import ru.skillbranch.devintensive.models.data.ChatItem
@@ -51,7 +52,7 @@ class MainViewModel : ViewModel() {
         } else {
             ChatItem(
                 lastChatArchive.id,
-                null,
+                null, // setDrawable
                 "",
                 "Архив чатов",
                 lastChatArchive.lastMessageShort().first,

@@ -2,9 +2,11 @@ package ru.skillbranch.devintensive.ui.archive
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -80,9 +82,17 @@ class ArchiveActivity : AppCompatActivity() {
         val touchCallback = ChatItemTouchHelperCallback(chatAdapter){
             val chatItemId = it.id
             viewModel.restoreFromArchive(chatItemId)
-            Snackbar.make(rv_archive_list, "Восстановить чат с ${it.title} из архива?", Snackbar.LENGTH_LONG)
+            //Snackbar.make(rv_archive_list, "Восстановить чат с ${it.title} из архива?", Snackbar.LENGTH_LONG)
+            //    .setAction("ОТМЕНА", View.OnClickListener { viewModel.addToArchive(chatItemId) })
+            //    .show()
+            val snackbar = Snackbar.make(rv_archive_list, "Восстановить чат с ${it.title} из архива?", Snackbar.LENGTH_LONG)
                 .setAction("ОТМЕНА", View.OnClickListener { viewModel.addToArchive(chatItemId) })
-                .show()
+
+            val typedValue = TypedValue()
+            rv_archive_list.context.theme.resolveAttribute(R.attr.colorItemBackground, typedValue, true)
+
+            snackbar.view.findViewById<TextView>(R.id.snackbar_text).setTextColor(typedValue.data)
+            snackbar.show()
         }
         val touchHelper = ItemTouchHelper(touchCallback)
         touchHelper.attachToRecyclerView(rv_archive_list)

@@ -1,13 +1,13 @@
 package ru.skillbranch.devintensive.ui.custom
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Rect
+import android.graphics.*
 import android.graphics.drawable.Drawable
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import ru.skillbranch.devintensive.R
 import kotlin.math.roundToInt
+import android.util.TypedValue
 
 class ChatDividerItemDecoration constructor(
     context: Context
@@ -22,6 +22,7 @@ class ChatDividerItemDecoration constructor(
         val a = context.obtainStyledAttributes(attrs)
         mDivider = a.getDrawable(0)
         avatarSize = context.resources.getDimension(R.dimen.avatar_item_size)
+
         a.recycle()
     }
 
@@ -52,6 +53,12 @@ class ChatDividerItemDecoration constructor(
             val bottom = mBounds.bottom + child.translationY.roundToInt()
             val top = bottom - mDivider!!.intrinsicHeight
             mDivider!!.setBounds(left, top, right, bottom)
+
+//            val typedValue = TypedValue()
+//            parent.context.theme.resolveAttribute(R.attr.colorItemDivider, typedValue, true)
+//            mDivider!!.colorFilter = PorterDuffColorFilter(typedValue.data, PorterDuff.Mode.SRC_ATOP)
+//            mDivider!!.alpha = 12
+
             mDivider!!.draw(canvas)
         }
 

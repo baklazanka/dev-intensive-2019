@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
+import android.util.TypedValue
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +23,8 @@ class ChatItemTouchHelperCallback(
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
         return if (viewHolder is ItemTouchViewHolder){
-            if (adapter.items[viewHolder.adapterPosition].chatType == ChatType.ARCHIVE){
+            //if (adapter.items[viewHolder.adapterPosition].chatType == ChatType.ARCHIVE){
+            if (viewHolder is ChatAdapter.ArchiveViewHolder){
                 makeFlag(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.START)
             } else{
                 makeFlag(ItemTouchHelper.ACTION_STATE_SWIPE, ItemTouchHelper.START)
@@ -69,6 +71,7 @@ class ChatItemTouchHelperCallback(
     ) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
             val itemView = viewHolder.itemView
+            //val isArchived = adapter.items[viewHolder.adapterPosition].isArchived
             drawBackground(canvas, itemView, dX)
             drawIcon(canvas, itemView, dX)
         }
@@ -76,6 +79,10 @@ class ChatItemTouchHelperCallback(
     }
 
     private fun drawIcon(canvas: Canvas, itemView: View, dX: Float) {
+//        val icon = when (isArchived){
+//            true -> itemView.resources.getDrawable(R.drawable.ic_unarchive_black_24dp, itemView.context.theme)
+//            else -> itemView.resources.getDrawable(R.drawable.ic_archive_black_24dp, itemView.context.theme)
+//        }
         val icon = itemView.resources.getDrawable(R.drawable.ic_archive_black_24dp, itemView.context.theme)
         val iconSize = itemView.resources.getDimensionPixelSize(R.dimen.icon_size)
         val space = itemView.resources.getDimensionPixelSize(R.dimen.spacing_normal_16)
@@ -100,11 +107,13 @@ class ChatItemTouchHelperCallback(
             bottom = itemView.bottom.toFloat()
         }
 
-        with(bgPaint){
-            color = itemView.resources.getColor(R.color.color_primary_dark, itemView.context.theme)
-        }
+        val typedValue = TypedValue()
+        itemView.context.theme.resolveAttribute(R.attr.colorSwipe, typedValue, true)
 
-        // Где-то здесь выполнять задание со звездочкой. Когда делаешь свайп, меняется цвет фона.
+        with(bgPaint){
+            //color = itemView.resources.getColor(R.color.color_primary_dark, itemView.context.theme)
+            color = typedValue.data
+        }
 
         canvas.drawRect(bgRect, bgPaint)
     }

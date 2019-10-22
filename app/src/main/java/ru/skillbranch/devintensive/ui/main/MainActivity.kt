@@ -1,6 +1,10 @@
 package ru.skillbranch.devintensive.ui.main
 
+import android.R.attr.resource
 import android.content.Intent
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -21,6 +25,10 @@ import ru.skillbranch.devintensive.ui.archive.ArchiveActivity
 import ru.skillbranch.devintensive.ui.custom.ChatDividerItemDecoration
 import ru.skillbranch.devintensive.ui.group.GroupActivity
 import ru.skillbranch.devintensive.viewmodels.MainViewModel
+import android.R.attr.textColor
+import android.content.Context
+import android.util.TypedValue
+import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
@@ -76,9 +84,17 @@ class MainActivity : AppCompatActivity() {
             if (it.chatType != ChatType.ARCHIVE){
                 val chatItemId = it.id
                 viewModel.addToArchive(chatItemId)
-                Snackbar.make(rv_chat_list, "Вы точно хотите добавить ${it.title} в архив?", Snackbar.LENGTH_LONG)
+                //Snackbar.make(rv_chat_list, "Вы точно хотите добавить ${it.title} в архив?", Snackbar.LENGTH_LONG)
+                //    .setAction("ОТМЕНА", View.OnClickListener { viewModel.restoreFromArchive(chatItemId) })
+                //    .show()
+                val snackbar = Snackbar.make(rv_chat_list, "Вы точно хотите добавить ${it.title} в архив?", Snackbar.LENGTH_LONG)
                     .setAction("ОТМЕНА", View.OnClickListener { viewModel.restoreFromArchive(chatItemId) })
-                    .show()
+
+                val typedValue = TypedValue()
+                rv_chat_list.context.theme.resolveAttribute(R.attr.colorItemBackground, typedValue, true)
+
+                snackbar.view.findViewById<TextView>(R.id.snackbar_text).setTextColor(typedValue.data)
+                snackbar.show()
             }
         }
         val touchHelper = ItemTouchHelper(touchCallback)
@@ -100,6 +116,4 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         viewModel.getChatData().observe(this, Observer { chatAdapter.updateDate(it) })
     }
-
-    // Еще нужна реализация AvatarView
 }

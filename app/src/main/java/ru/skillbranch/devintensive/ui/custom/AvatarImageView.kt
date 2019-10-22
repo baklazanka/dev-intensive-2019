@@ -68,7 +68,6 @@ class AvatarImageView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas?) {
         paintBorder.style = Paint.Style.FILL
-        //paintBorder.color = Color.parseColor(bgColors[4])
         paintBorder.color = when {
             initials.isNullOrEmpty() -> Color.parseColor(bgColors[0])
             initials!!.length == 2 -> Color.parseColor(bgColors[5])

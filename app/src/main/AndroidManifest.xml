@@ -14,11 +14,11 @@
             android:theme="@style/AppTheme">
         <activity
                 android:name=".ui.archive.ArchiveActivity"
-                android:label="Архив чатов">
+                android:label="@string/archive_name">
         </activity>
         <activity
                 android:name=".ui.group.GroupActivity"
-                android:label="Создание группы">
+                android:label="@string/group_name">
         </activity>
         <activity android:name=".ui.main.MainActivity">
             <intent-filter>

@@ -1,9 +1,11 @@
 package ru.skillbranch.devintensive.ui.group
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.activity_group.*
+import kotlinx.android.synthetic.main.item_user_list.view.*
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.models.data.UserItem
 import ru.skillbranch.devintensive.ui.adapters.UserAdapter
@@ -109,8 +112,10 @@ class GroupActivity : AppCompatActivity() {
             isCloseIconVisible = true
             tag = user.id
             isClickable = true
-            closeIconTint = ColorStateList.valueOf(Color.WHITE)
-            chipBackgroundColor = ColorStateList.valueOf(getColor(R.color.color_primary_light))
+            //closeIconTint = ColorStateList.valueOf(Color.WHITE)
+            closeIconTint = ColorStateList.valueOf(getColor(getAttributeColor(this@GroupActivity, R.attr.colorChipClose)))
+            //chipBackgroundColor = ColorStateList.valueOf(getColor(R.color.color_primary_light))
+            chipBackgroundColor = ColorStateList.valueOf(getColor(getAttributeColor(this@GroupActivity, R.attr.colorPrimaryLight)))
             setTextColor(Color.WHITE)
         }
 
@@ -133,5 +138,11 @@ class GroupActivity : AppCompatActivity() {
         }
 
         users.forEach{ (_,v) -> addChipToGroup(v) }
+    }
+
+    private fun getAttributeColor(context: Context, resId: Int): Int {
+        val typedValue = TypedValue()
+        context.theme.resolveAttribute(resId, typedValue, true)
+        return typedValue.resourceId
     }
 }
