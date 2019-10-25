@@ -60,9 +60,8 @@ class MainViewModel : ViewModel() {
                 lastChatArchive.lastMessageDate()?.shortFormat(),
                 false,
                 ChatType.ARCHIVE,
-                "@${lastChatArchive.lastMessageShort().second}"
-                // ag
-                //lastChatArchive.lastMessageShort().second
+                //"@${lastChatArchive.lastMessageShort().second}"
+                lastChatArchive.lastMessageShort().second
             )
         }
     }

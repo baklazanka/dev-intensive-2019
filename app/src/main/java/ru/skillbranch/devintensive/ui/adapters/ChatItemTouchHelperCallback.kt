@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.models.data.ChatItem
 import ru.skillbranch.devintensive.models.data.ChatType
+import ru.skillbranch.devintensive.ui.archive.ArchiveActivity
+import ru.skillbranch.devintensive.ui.main.MainActivity
 
 class ChatItemTouchHelperCallback(
     private val adapter: ChatAdapter,
@@ -23,7 +25,6 @@ class ChatItemTouchHelperCallback(
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
         return if (viewHolder is ItemTouchViewHolder){
-            //if (adapter.items[viewHolder.adapterPosition].chatType == ChatType.ARCHIVE){
             if (viewHolder is ChatAdapter.ArchiveViewHolder){
                 makeFlag(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.START)
             } else{
@@ -71,7 +72,6 @@ class ChatItemTouchHelperCallback(
     ) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
             val itemView = viewHolder.itemView
-            //val isArchived = adapter.items[viewHolder.adapterPosition].isArchived
             drawBackground(canvas, itemView, dX)
             drawIcon(canvas, itemView, dX)
         }
@@ -79,11 +79,11 @@ class ChatItemTouchHelperCallback(
     }
 
     private fun drawIcon(canvas: Canvas, itemView: View, dX: Float) {
-//        val icon = when (isArchived){
-//            true -> itemView.resources.getDrawable(R.drawable.ic_unarchive_black_24dp, itemView.context.theme)
-//            else -> itemView.resources.getDrawable(R.drawable.ic_archive_black_24dp, itemView.context.theme)
-//        }
-        val icon = itemView.resources.getDrawable(R.drawable.ic_archive_black_24dp, itemView.context.theme)
+        val icon = when (itemView.context){
+            is ArchiveActivity -> itemView.resources.getDrawable(R.drawable.ic_unarchive_black_24dp, itemView.context.theme)
+            else -> itemView.resources.getDrawable(R.drawable.ic_archive_black_24dp, itemView.context.theme)
+        }
+        //val icon = itemView.resources.getDrawable(R.drawable.ic_archive_black_24dp, itemView.context.theme)
         val iconSize = itemView.resources.getDimensionPixelSize(R.dimen.icon_size)
         val space = itemView.resources.getDimensionPixelSize(R.dimen.spacing_normal_16)
 
