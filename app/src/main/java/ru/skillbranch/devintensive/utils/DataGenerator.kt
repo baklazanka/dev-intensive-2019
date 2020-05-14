@@ -466,13 +466,15 @@ object DataGenerator {
     }
 
     private fun randomUser(users: List<User>): User {
-        val rndInd = (0 until users.size).random()
+//        val rndInd = (0 until users.size).random()
+        val rndInd = (users.indices).random()
         return users[rndInd]
     }
 
     private fun <T> List<T>.random(includeNull: Boolean = false): T? {
         return if (includeNull && Random.nextBoolean()) null
-        else this[(0 until this.size).random()]
+        else this[(this.indices).random()]
+//        else this[(0 until this.size).random()]
     }
 
     private fun <T> List<T>.randomSublist(maxCount: Int, minCount: Int = 1): List<T> {

@@ -10,18 +10,16 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.chip.Chip
 import kotlinx.android.synthetic.main.activity_group.*
-import kotlinx.android.synthetic.main.item_user_list.view.*
 import ru.skillbranch.devintensive.R
 import ru.skillbranch.devintensive.models.data.UserItem
 import ru.skillbranch.devintensive.ui.adapters.UserAdapter
 import ru.skillbranch.devintensive.ui.custom.ChatDividerItemDecoration
+import ru.skillbranch.devintensive.ui.custom.AvatarChip
 import ru.skillbranch.devintensive.viewmodels.GroupViewModel
 
 class GroupActivity : AppCompatActivity() {
@@ -106,9 +104,11 @@ class GroupActivity : AppCompatActivity() {
     }
 
     private fun addChipToGroup(user: UserItem) {
-        val chip = Chip(this).apply {
+        //val chip = Chip(this).apply {
+        val chip = AvatarChip(this).apply {
             text = user.fullName
-            chipIcon = resources.getDrawable(R.drawable.avatar_default, theme)
+            //chipIcon = resources.getDrawable(R.drawable.avatar_default, theme)
+            setIconUrl(user.avatar, user.initials ?: "??")
             isCloseIconVisible = true
             tag = user.id
             isClickable = true
@@ -127,10 +127,12 @@ class GroupActivity : AppCompatActivity() {
         chip_group.visibility = if (listUsers.isEmpty()) View.GONE else View.VISIBLE
 
         val users = listUsers
-            .associate { user -> user.id to user }
+            //.associate { user -> user.id to user }
+            .associateBy { user -> user.id }
             .toMutableMap()
 
-        val views = chip_group.children.associate { view -> view.tag to view }
+        //val views = chip_group.children.associate { view -> view.tag to view }
+        val views = chip_group.children.associateBy { view -> view.tag }
 
         for ((k,v) in views){
             if (!users.containsKey(k)) chip_group.removeView(v)

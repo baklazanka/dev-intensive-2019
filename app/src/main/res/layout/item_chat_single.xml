@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/item_size"
-                android:background="?attr/colorItemBackground"
-                android:padding="@dimen/spacing_normal_16">
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_size"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="?attr/colorItemBackground"
+        android:padding="@dimen/spacing_normal_16">
 
     <ru.skillbranch.devintensive.ui.custom.AvatarImageView
             android:id="@+id/iv_avatar_single"
             android:layout_width="@dimen/avatar_item_size"
             android:layout_height="@dimen/avatar_item_size"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentStart="true"
+            app:aiv_borderWidth="0dp"/>
             <!--android:src="@drawable/avatar_default"-->
 
     <View
@@ -19,7 +21,7 @@
         android:layout_height="12dp"
         android:background="@drawable/bg_indicator"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@id/tv_title_single"
+        android:layout_toStartOf="@id/tv_title_single"
     />
 
     <TextView
@@ -30,8 +32,8 @@
             android:textColor="?attr/colorPrimary"
             android:fontFamily="sans-serif-medium"
             android:textSize="14sp"
-            android:layout_toRightOf="@id/iv_avatar_single"
-            android:layout_toLeftOf="@id/tv_date_single"
+            android:layout_toEndOf="@id/iv_avatar_single"
+            android:layout_toStartOf="@id/tv_date_single"
             android:layout_marginLeft="@dimen/spacing_normal_16"
             android:layout_marginRight="@dimen/spacing_normal_16"/>
 
@@ -43,18 +45,21 @@
             android:textColor="?attr/colorGrayDark"
             android:fontFamily="sans-serif-medium"
             android:textSize="14sp"
-            android:layout_toRightOf="@id/iv_avatar_single"
-            android:layout_toLeftOf="@id/tv_counter_single"
+            android:layout_toEndOf="@id/iv_avatar_single"
+            android:layout_toStartOf="@id/tv_counter_single"
             android:layout_marginLeft="@dimen/spacing_normal_16"
             android:layout_marginRight="@dimen/spacing_normal_16"
-            android:layout_below="@id/tv_title_single"/>
+            android:layout_below="@id/tv_title_single"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:singleLine="true"/>
 
     <TextView
             android:id="@+id/tv_date_single"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="10sp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
             android:textColor="?attr/colorGrayDark"
             tools:text="18:00"/>
@@ -68,7 +73,7 @@
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:textSize="10sp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:textColor="@android:color/white"
             tools:text="11"/>

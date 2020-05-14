@@ -61,13 +61,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
+        val typedValue = TypedValue()
+        rv_chat_list.context.theme.resolveAttribute(R.attr.colorItemBackground, typedValue, true)
+
         chatAdapter = ChatAdapter{
             if(it.chatType == ChatType.ARCHIVE){
                 val intent = Intent(this, ArchiveActivity::class.java)
                 startActivity(intent)
             }
             else{
-                Snackbar.make(rv_chat_list, "Click on ${it.title}", Snackbar.LENGTH_LONG).show()
+                //Snackbar.make(rv_chat_list, "Click on ${it.title}", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(rv_chat_list, "Click on ${it.title}", Snackbar.LENGTH_LONG)
+                    .apply {
+                        view.findViewById<TextView>(R.id.snackbar_text).setTextColor(typedValue.data)
+                    }
+                    .show()
             }
         }
 
@@ -80,14 +88,12 @@ class MainActivity : AppCompatActivity() {
                 //Snackbar.make(rv_chat_list, "Вы точно хотите добавить ${it.title} в архив?", Snackbar.LENGTH_LONG)
                 //    .setAction("ОТМЕНА", View.OnClickListener { viewModel.restoreFromArchive(chatItemId) })
                 //    .show()
-                val snackbar = Snackbar.make(rv_chat_list, "Вы точно хотите добавить ${it.title} в архив?", Snackbar.LENGTH_LONG)
+                Snackbar.make(rv_chat_list, "Вы точно хотите добавить ${it.title} в архив?", Snackbar.LENGTH_LONG)
                     .setAction("ОТМЕНА", View.OnClickListener { viewModel.restoreFromArchive(chatItemId) })
-
-                val typedValue = TypedValue()
-                rv_chat_list.context.theme.resolveAttribute(R.attr.colorItemBackground, typedValue, true)
-
-                snackbar.view.findViewById<TextView>(R.id.snackbar_text).setTextColor(typedValue.data)
-                snackbar.show()
+                    .apply {
+                        view.findViewById<TextView>(R.id.snackbar_text).setTextColor(typedValue.data)
+                    }
+                    .show()
             }
         }
         val touchHelper = ItemTouchHelper(touchCallback)

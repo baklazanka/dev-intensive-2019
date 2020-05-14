@@ -1,6 +1,5 @@
 package ru.skillbranch.devintensive.extensions
 
-import java.lang.IllegalStateException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -53,18 +52,18 @@ fun Date.humanizeDiff(date: Date = Date()): String {
     val absDiffDays = abs(diffDays)
 
     val result: String = when{
-        (absDiffSeconds > 1 && absDiffSeconds <= 45) -> "несколько секунд"
-        (absDiffSeconds > 45 && absDiffSeconds <= 75) -> "минуту"
+        (absDiffSeconds in 2..45) -> "несколько секунд"
+        (absDiffSeconds in 46..75) -> "минуту"
         (absDiffSeconds > 75 && absDiffMinutes <= 45) -> TimeUnits.MINUTE.plural(absDiffMinutes.toInt())
-        (absDiffMinutes > 45 && absDiffMinutes <= 75) -> "час"
+        (absDiffMinutes in 46..75) -> "час"
         (absDiffMinutes > 75 && absDiffHours <= 22) -> TimeUnits.HOUR.plural(absDiffHours.toInt())
-        (absDiffHours > 22 && absDiffHours <= 26) -> "день"
+        (absDiffHours in 23..26) -> "день"
         (absDiffHours > 26 && absDiffDays <= 360) -> TimeUnits.DAY.plural(absDiffDays.toInt())
         else -> ""
     }
 
     return when{
-        (absDiffSeconds >= 0 && absDiffSeconds <= 1) -> "только что"
+        (absDiffSeconds in 0..1) -> "только что"
         (diffDays > 360) -> "более года назад"
         (diffDays < -360) -> "более чем через год"
         else -> when{

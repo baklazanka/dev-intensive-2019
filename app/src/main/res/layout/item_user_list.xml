@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/item_size"
-                android:background="?attr/colorItemBackground"
-                android:padding="@dimen/spacing_normal_16">
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_size"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="?attr/colorItemBackground"
+        android:padding="@dimen/spacing_normal_16">
 
     <ImageView
             android:id="@+id/iv_selected"
@@ -21,7 +22,8 @@
             android:id="@+id/iv_avatar_user"
             android:layout_width="@dimen/avatar_item_size"
             android:layout_height="@dimen/avatar_item_size"
-            android:layout_toRightOf="@id/iv_selected"/>
+            android:layout_toRightOf="@id/iv_selected"
+            app:aiv_borderWidth="0dp"/>
             <!--android:src="@drawable/avatar_default"/>-->
 
     <View

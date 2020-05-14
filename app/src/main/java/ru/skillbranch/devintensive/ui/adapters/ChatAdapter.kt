@@ -1,6 +1,5 @@
 package ru.skillbranch.devintensive.ui.adapters
 
-import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,11 +27,12 @@ class ChatAdapter(
 
     var items: List<ChatItem> = listOf()
 
-    override fun getItemViewType(position: Int): Int = when(items[position].chatType){
-        ChatType.ARCHIVE -> ARCHIVE_TYPE
-        ChatType.SINGLE -> SINGLE_TYPE
-        ChatType.GROUP -> GROUP_TYPE
-    }
+    override fun getItemViewType(position: Int): Int =
+        when(items[position].chatType){
+            ChatType.ARCHIVE -> ARCHIVE_TYPE
+            ChatType.SINGLE -> SINGLE_TYPE
+            ChatType.GROUP -> GROUP_TYPE
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)

@@ -19,6 +19,7 @@
     <attr name="colorSwipe" format="reference"/>
     <attr name="colorChipClose" format="reference"/>
     <attr name="colorItemDivider" format="reference"/>
+    <attr name="colorArchiveIconBackground" format="reference"/>
 
     <declare-styleable name="CircleImageView">
         <attr name="cv_borderColor" format="color"/>

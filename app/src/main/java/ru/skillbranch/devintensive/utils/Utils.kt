@@ -1,5 +1,13 @@
 package ru.skillbranch.devintensive.utils
 
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Rect
+import androidx.core.graphics.toRectF
+import java.util.*
+import kotlin.math.*
+
 object Utils {
     fun parseFullName(fullName: String?): Pair<String?, String?> {
         var localFullName = fullName
@@ -21,10 +29,10 @@ object Utils {
         }
         else if (firstName.isNullOrBlank() || lastName.isNullOrBlank()){
             var initial = if (firstName.isNullOrBlank()) lastName?.substring(0, 1) else firstName.substring(0, 1)
-            initial?.toUpperCase()
+            initial?.toUpperCase(Locale.ROOT)
         }
         else{
-            (firstName.substring(0, 1) + lastName.substring(0, 1)).toUpperCase()
+            (firstName.substring(0, 1) + lastName.substring(0, 1)).toUpperCase(Locale.ROOT)
         }
 
     fun transliteration(payload: String, divider: String = " "): String {
@@ -75,5 +83,36 @@ object Utils {
         }
 
         return resultString
+    }
+
+    fun drawInitials(canvas: Canvas, initials: String, initialsPaint: Paint, viewRect: Rect) {
+        initialsPaint.color = initialsToColor(initials)
+        canvas.drawOval(viewRect.toRectF(), initialsPaint)
+        with(initialsPaint){
+            color = Color.WHITE
+            textAlign = Paint.Align.CENTER
+            textSize = viewRect.height() * 0.5f
+        }
+        val offsetY = (initialsPaint.descent() + initialsPaint.ascent()) / 2
+        canvas.drawText(initials, viewRect.exactCenterX(), viewRect.exactCenterY() - offsetY, initialsPaint)
+    }
+
+    private fun initialsToColor(letters: String): Int {
+        val bgColors = arrayOf(
+            Color.parseColor("#7BC862"),
+            Color.parseColor("#E17076"),
+            Color.parseColor("#FAA774"),
+            Color.parseColor("#6EC9CB"),
+            Color.parseColor("#65AADD"),
+            Color.parseColor("#A695E7"),
+            Color.parseColor("#EE7AAE"),
+            Color.parseColor("#2196F3")
+        )
+
+        val b = letters[0].toByte()
+        val len = bgColors.size
+        val d = b / len.toDouble()
+        val index = ((d - truncate(d)) * len).toInt()
+        return bgColors[index]
     }
 }
